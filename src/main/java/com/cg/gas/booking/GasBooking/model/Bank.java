@@ -1,14 +1,12 @@
 package com.cg.gas.booking.GasBooking.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "bank")
 public class Bank {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int bank_id;
 	@Column
 	private String bank_name;
