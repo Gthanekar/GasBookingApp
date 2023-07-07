@@ -2,11 +2,18 @@ package com.cg.gas.booking.GasBooking.model;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,20 +21,28 @@ import jakarta.persistence.Table;
 public class GasBooking {
 
 	@Id
+	@Column(name = "GasBookingId")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int gasBookingId;
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int customerId;
-	@Column
+	@Column(name = "BookingDate")
 	private LocalDate bookingDate;
-	@Column
+	@Column(name = "Status")
 	private boolean status;
-	@Column
+	@Column(name = "Bill")
 	private float bill;
-	
-	public GasBooking() {
-		// TODO Auto-generated constructor stub
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Customer_Id")
+	@Autowired
+	private Customer customer;
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public int getGasBookingId() {
@@ -36,14 +51,6 @@ public class GasBooking {
 
 	public void setGasBookingId(int gasBookingId) {
 		this.gasBookingId = gasBookingId;
-	}
-
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
 	}
 
 	public LocalDate getBookingDate() {
@@ -72,8 +79,7 @@ public class GasBooking {
 
 	@Override
 	public String toString() {
-		return "GasBooking [gasBookingId=" + gasBookingId + ", customerId=" + customerId + ", bookingDate="
-				+ bookingDate + ", status=" + status + ", bill=" + bill + "]";
+		return "GasBooking [gasBookingId=" + gasBookingId + ", bookingDate=" + bookingDate + ", status=" + status
+				+ ", bill=" + bill + ", customer=" + customer + "]";
 	}
-
 }
